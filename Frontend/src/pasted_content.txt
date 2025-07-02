@@ -1,0 +1,145 @@
+Excellent question! In your **NestJS backend**, the **Gemini API integration** usually goes inside a **dedicated service** and is optionally exposed through a **controller**. This is the clean, modular NestJS way.
+
+---
+
+## ✅ Recommended Backend Structure
+
+Inside your `backend/src/`, you can organize the Gemini API logic like this:
+
+```
+src/
+├── gemini/               👈 NEW folder for Gemini logic
+│   ├── gemini.service.ts     👈 Gemini API call logic
+│   └── gemini.controller.ts  👈 HTTP endpoint to use it
+├── app.module.ts         👈 Import GeminiModule here
+└── main.ts
+
+```
+
+---
+
+## 🔧 Step-by-Step Setup
+
+### 1. **Generate Module, Service & Controller**
+
+In the root of your `backend/` folder, run:
+
+```bash
+nest g module gemini
+nest g service gemini
+nest g controller gemini
+
+```
+
+This creates files in `src/gemini/` and sets up the necessary decorators.
+
+---
+
+### 2. **Add Gemini API Code in `gemini.service.ts`**
+
+Replace the contents with something like this:
+
+```
+// src/gemini/gemini.service.ts
+import { Injectable } from '@nestjs/common';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+@Injectable()
+export class GeminiService {
+  private genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  private model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
+
+  async ask(prompt: string): Promise<string> {
+    const result = await this.model.generateContent(prompt);
+    const response = result.response;
+    return response.text();
+  }
+}
+
+```
+
+> ✅ Don’t forget to add GEMINI_API_KEY=your-key in your .env and use @nestjs/config to load it.
+> 
+
+---
+
+### 3. **Create Endpoint in `gemini.controller.ts`**
+
+```
+// src/gemini/gemini.controller.ts
+import { Controller, Post, Body } from '@nestjs/common';
+import { GeminiService } from './gemini.service';
+
+@Controller('gemini')
+export class GeminiController {
+  constructor(private readonly geminiService: GeminiService) {}
+
+  @Post('ask')
+  async askGemini(@Body('prompt') prompt: string) {
+    const response = await this.geminiService.ask(prompt);
+    return { response };
+  }
+}
+
+```
+
+Now your backend has a working API at:
+
+```
+POST http://localhost:3000/gemini/ask
+{
+  "prompt": "What is the capital of France?"
+}
+
+```
+
+---
+
+### 4. **Register `GeminiModule` in `app.module.ts`**
+
+```
+// src/app.module.ts
+import { Module } from '@nestjs/common';
+import { GeminiModule } from './gemini/gemini.module';
+
+@Module({
+  imports: [GeminiModule],
+})
+export class AppModule {}
+
+```
+
+---
+
+## 🔁 Frontend Flow Recap
+
+Your frontend will send a request to:
+
+```
+http://localhost:3000/gemini/ask
+
+```
+
+With this body:
+
+```json
+{
+  "prompt": "Explain quantum computing"
+}
+
+```
+
+Your NestJS backend:
+
+- Passes the prompt to `GeminiService`
+- Sends it to Gemini API
+- Returns the response to the frontend
+
+---
+
+Would you like me to give you:
+
+- A downloadable example backend folder?
+- The full `.env`, config, and setup guide for the Gemini API in NestJS?
+
+Let me know how far you’d like to go!
