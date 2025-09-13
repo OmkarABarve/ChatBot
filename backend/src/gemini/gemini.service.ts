@@ -17,7 +17,10 @@ interface ChatTurn {
 export class GeminiService {
   constructor(private readonly chatService: ChatService) {}
 
-  private genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+  // Make sure it's using the environment variable
+  private genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || (() => {
+    throw new Error('GEMINI_API_KEY environment variable is required');
+  })());
   private model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   async ask(prompt: string): Promise<string> {
