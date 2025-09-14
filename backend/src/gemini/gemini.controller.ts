@@ -9,13 +9,9 @@ export class GeminiController {
     @Body('prompt') prompt: string,
     @Body('sessionId') sessionId: string,
   ) {
-    if (prompt.toLowerCase().includes(`lets chat`)) {
-      const response = await this.geminiService.chatting(prompt, sessionId); //sessionId comes fom frontend
-      return { response };
-    } else {
-      const response = await this.geminiService.ask(prompt);
-      return { response };
-    }
+    
+      const response = await this.geminiService.interviewWithTools(prompt, sessionId); //sessionId comes fom frontend
+    return { response };
   }
   //@Get('session/:id')
 

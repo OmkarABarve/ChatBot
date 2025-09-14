@@ -3,88 +3,58 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
-import { GoogleGenerativeAI, Content } from '@google/generative-ai';
-import { ChatService } from 'src/Chat/Schema/chat.service'; // Fix path if needed
-//import { ChatTurn } from 'src/chat/chat.interface'; // Optional: if you typed it
-interface ChatTurn {
-  role: 'user' | 'model';
-  parts: string[];
-}
-
-
+import { generateText, generateObject } from 'ai';
+import { google } from '@ai-sdk/google';
+import { ChatService } from 'src/Chat/Schema/chat.service';
+import {
+  createIntroductionTool,
+  createQuestionsTool,
+  createConclusionTool,
+} from '../../tools';
 
 @Injectable()
 export class GeminiService {
   constructor(private readonly chatService: ChatService) {}
 
-  // Make sure it's using the environment variable
-  private genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || (() => {
-    throw new Error('GEMINI_API_KEY environment variable is required');
-  })());
-  private model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
-  async ask(prompt: string): Promise<string> {
-    try {
-      const result = await this.model.generateContent(prompt);
-      return result.response.text();
-    } catch (error) {
-      console.error('💥 Gemini error:', error);
-      throw new Error('Gemini API failed');
-    }
-  }
-
-  async chatting(
+  async interviewWithTools(
     prompt: string,
     sessionId: string,
     systemPrompt?: string,
   ): Promise<string> {
+    console.log("GeminiService InterviewWithTools called");
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const result = await generateText({
+        model: google('gemini-1.5-flash-latest'),
+        messages: [
+          {
+            role: 'system',
+            content: systemPrompt || 'You are an Excel interview assistant.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        tools: {
+          introTool: createIntroductionTool(),
+          questionsTool: createQuestionsTool(),
+          conclusionTool: createConclusionTool(),
+        },
+        toolChoice: 'auto',
+      });
 
-      // Save user message
+      // Save the conversation
       await this.chatService.addTurn(sessionId, {
         role: 'user',
         parts: [prompt],
       });
 
-      // If it's a new chat with system prompt
-      if (systemPrompt) {
-        const chat = model.startChat({
-          history: [],
-          systemInstruction: systemPrompt,
-        });
-
-        const result = await chat.sendMessage(prompt);
-        const reply = result.response.text();
-
-        await this.chatService.addTurn(sessionId, {
-          role: 'model',
-          parts: [reply],
-        });
-
-        return reply;
-      }
-
-      // Continue conversation from stored history
-      const raw = await this.chatService.getConversation(sessionId);
-      const history = raw?.conversation ?? [];
-
-      const chat = model.startChat({
-  history: history.map((turn) => ({
-    role: turn.role,
-    parts: turn.parts.map((text) => ({ text })),
-  })),
-});
-
-      const result = await chat.sendMessage(prompt);
-      const reply = result.response.text();
-
       await this.chatService.addTurn(sessionId, {
         role: 'model',
-        parts: [reply],
+        parts: [result.text],
       });
 
-      return reply;
+      return result.text;
     } catch (error) {
       console.error('💥 Gemini error:', error);
       throw new Error('Gemini API failed');

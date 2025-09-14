@@ -10,7 +10,9 @@ import { ChatDocument } from './chat.interface';
 export class ChatService {
 
   
-  constructor(@InjectModel('Chat') private readonly ChatModel: Model<any>) {console.log('ChatService initialized ✅');}
+  constructor(@InjectModel('Chat') private readonly ChatModel: Model<any>) {
+    console.log('ChatService initialized ✅');
+  }
   async addTurn(
     sessionId: string,
     turn: { role: 'user' | 'model'; parts: string[] },

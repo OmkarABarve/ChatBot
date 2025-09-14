@@ -9,6 +9,16 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+}
+
+.gemini-chat-content {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .gemini-chat-header {
@@ -195,10 +205,40 @@
   font-size: 16px;
 }
 
+/* Landscape-specific styles */
+@media (orientation: landscape) and (min-height: 500px) {
+  .gemini-chat-container {
+    padding-top: 20px;
+    align-items: flex-start;
+  }
+  
+  .gemini-chat-content {
+    max-width: 900px;
+  }
+  
+  .gemini-chat-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .gemini-chat-header p {
+    font-size: 1rem;
+  }
+  
+  .gemini-chat-form {
+    padding: 25px;
+  }
+  
+  .prompt-input {
+    min-height: 100px;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .gemini-chat-container {
     padding: 15px;
+    padding-top: 20px;
   }
   
   .gemini-chat-header h1 {

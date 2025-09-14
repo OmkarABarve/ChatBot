@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/// <reference types="vite/client" />
 import { useState } from 'react';
 import './GeminiChat.css';
 
@@ -13,7 +12,7 @@ const GeminiChat = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (!prompt.trim()) {
@@ -28,13 +27,13 @@ const GeminiChat = () => {
     try {
       const isChatSession = prompt.toLowerCase().includes('lets chat');
       const res = await fetch('http://localhost:3000/gemini/ask', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    prompt: prompt,
-    sessionId: isChatSession ? 'session-001' : undefined, // Replace with dynamic logic if needed
-  }),
-})
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: prompt,
+          sessionId: isChatSession ? 'session-001' : 'default-session',
+        }),
+      });
 
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
@@ -43,7 +42,7 @@ const GeminiChat = () => {
       const data = await res.json();
       setResponse(data.response);
     } catch (err) {
-      setError(`Error: ${err.message}`);
+      setError(`Error: ${(err as Error).message}`);
     } finally {
       setLoading(false);
     }
@@ -62,6 +61,32 @@ const GeminiChat = () => {
         <p>Ask me anything and I'll help you!</p>
       </div>
 
+      {/* New wrapper for scrollable content */}
+      <div className="chat-history">
+        {error && (
+          <div className="error-message">
+            <span className="error-icon">⚠️</span>
+            {error}
+          </div>
+        )}
+
+        {response && (
+          <div className="response-container">
+            <h3>Gemini's Response:</h3>
+            <div className="response-content">
+              {response}
+            </div>
+          </div>
+        )}
+
+        {loading && (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Gemini is thinking...</p>
+          </div>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit} className="gemini-chat-form">
         <div className="input-group">
           <textarea
@@ -76,13 +101,6 @@ const GeminiChat = () => {
 
         <div className="button-group">
           <button 
-            type="submit" 
-            disabled={loading || !prompt.trim()}
-            className="submit-btn"
-          >
-            {loading ? 'Thinking...' : 'Ask Gemini'}
-          </button>
-          <button 
             type="button" 
             onClick={handleClear}
             className="clear-btn"
@@ -90,34 +108,17 @@ const GeminiChat = () => {
           >
             Clear
           </button>
+          <button 
+            type="submit" 
+            disabled={loading || !prompt.trim()}
+            className="submit-btn"
+          >
+            {loading ? 'Thinking...' : 'Answer'}
+          </button>
         </div>
       </form>
-
-      {error && (
-        <div className="error-message">
-          <span className="error-icon">⚠️</span>
-          {error}
-        </div>
-      )}
-
-      {response && (
-        <div className="response-container">
-          <h3>Gemini's Response:</h3>
-          <div className="response-content">
-            {response}
-          </div>
-        </div>
-      )}
-
-      {loading && (
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Gemini is thinking...</p>
-        </div>
-      )}
     </div>
   );
 };
 
 export default GeminiChat;
-
