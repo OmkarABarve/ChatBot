@@ -21,7 +21,7 @@ IMPORTANT RULES:
 
 TOOL USAGE:
 - Use introTool first to introduce yourself and explain the process. Use once, then proceed. NEVER call it more than once.
-- Use questionsTool to conduct the actual interview with 10 questions
+- Use questionsTool to conduct the actual interview with 10 questions.
 - Use conclusionTool to wrap up and provide final assessment
 
 Start the interview immediately when the user greets you or asks to begin.
