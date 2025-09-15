@@ -10,16 +10,17 @@ export class GeminiController {
   @Post('ask')
   async askGemini(
     @Body('sessionId') sessionId: string,
-    @Body('messages') messages?: UIMessage[],
+    @Body('messages') messages: UIMessage[],
   ) {
+    console.log(messages);
     const uiMessages = messages || [
       {
         id: Date.now().toString(),
         role: 'user' as const,
         parts: [
           {
-            type: 'text' as const,
-            text: "Hi",
+            type: 'text' as const,  // ✅ REQUIRED
+            text: 'Helo', // ✅ REQUIRED
           },
         ],
       },

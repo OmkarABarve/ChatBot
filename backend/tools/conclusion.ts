@@ -21,8 +21,8 @@ export function createConclusionTool() {
   return tool<ToolSchemaType, string>({
     description: ConclusionDescription,
     inputSchema: ConclusionSchema,
-    execute: async () => {
-      console.log('Conclusion tool executed');
+    execute: async (data: ToolSchemaType): Promise<string> => {
+      console.log('Conclusion tool executed\n', data);
       return `Conclusion tool executed`;
     },
   });

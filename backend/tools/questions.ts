@@ -76,8 +76,8 @@ export function createQuestionsTool() {
   return tool<ToolSchemaType, string>({
     description: QuestionsDescription,
     inputSchema: QuestionsSchema,
-    execute: async () => {
-      console.log('Questions tool executed');
+    execute: async (data: ToolSchemaType): Promise<string> => {
+      console.log('Questions tool executed\n', data);
       return `Questions tool executed. Move on to the conclusion tool`;
     },
   });
