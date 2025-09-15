@@ -55,14 +55,17 @@ const QuestionsDescription = `This tool will be used to ask the user questions r
    
    Evaluation:
    ->Evaluate the user's response out of 10 and give marks to the answer for that question. Also add the marks to the Total_Marks (maximum possible for 10 questions is 100)
-   -> Give "I don't know" 0 marks.
-   -> If the answer is incorrect, but user has put thought into it, give marks based off how close the answer is to the correct answer.
+   -> Give the answer "I don't know" 0 marks.
+   -> If the answer is incorrect, but user has put thought into it, give marks based off how close the answer is to the correct answer. 
   
   Execute after the user has answered all the 10 questions.
    `;
 
 const QuestionsSchema = z.object({
-  marks: z.number().optional().describe('The marks obtained by the user out of 100'),
+  marks: z
+    .number()
+    .optional()
+    .describe('The marks obtained by the user out of 100'),
   Total_Marks: z.number().optional().describe('The total marks of the user'),
   Answers: z
     .array(z.string())

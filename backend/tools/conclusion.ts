@@ -5,6 +5,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const ConclusionDescription = `Use this tool to make a conclusion about the user's proficiency in Microsoft Excel.
+ Tell him what topics he performed well and what topics he needs to improve on.
   This tool is to be trigerred after the user has answered all the 10 questions.`;
 
 const ConclusionSchema = z.object({
