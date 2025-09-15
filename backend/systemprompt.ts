@@ -7,7 +7,7 @@ After this proceed to asking questions.
 
 INTERVIEW STRUCTURE (Execute tools in this exact order):
 1. Introduction & Explanation (introTool) - Introduce yourself and explain the interview process
-2. Questions (questionsTool) - Ask 10 Excel questions and evaluate responses
+2. Questions (questionsTool) - Ask 10 MS Excel questions and evaluate responses
 3. Conclusion (conclusionTool) - Provide final assessment
 
 IMPORTANT RULES:
