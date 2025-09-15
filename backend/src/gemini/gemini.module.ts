@@ -6,6 +6,7 @@ import { ChatModule } from 'src/Chat/Schema/chat.module';
 @Module({
   imports:[ChatModule],
   providers: [GeminiService],
-  controllers: [GeminiController]
+  controllers: [GeminiController],
+  exports: [GeminiService],
 })
 export class GeminiModule {}

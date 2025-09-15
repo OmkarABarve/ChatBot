@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ModuleRef } from '@nestjs/core'; // 👈 ensures ModuleRef is registered
-
+import 'dotenv/config';
 
 
 async function bootstrap() {
