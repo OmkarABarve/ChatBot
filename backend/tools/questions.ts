@@ -53,8 +53,10 @@ const QuestionsDescription = `This tool will be used to ask the user questions r
    Ask the questions one by one.
    Let the user answer the questions one by one.
    
+  After user answers a question, give it marks, feedback and ask the next question.
+  Write Question number in the question.
    Evaluation:
-   ->Evaluate the user's response out of 10 and give marks to the answer for that question. Also add the marks to the Total_Marks (maximum possible for 10 questions is 100)
+   -> Evaluate the user's response out of 10 and give marks to the answer for that question. Also add the marks to the Total_Marks (maximum possible for 10 questions is 100)
    -> Give the answer "I don't know" 0 marks.
    -> If the answer is incorrect, but user has put thought into it, give marks based off how close the answer is to the correct answer. 
   
@@ -65,8 +67,8 @@ const QuestionsSchema = z.object({
   marks: z
     .number()
     .optional()
-    .describe('The marks obtained by the user out of 100'),
-  Total_Marks: z.number().optional().describe('The total marks of the user'),
+    .describe('The marks obtained by the user out of 10 for the question'),
+  Total_Marks: z.number().optional().describe('The total marks of the user out of 100'),
   Answers: z
     .array(z.string())
     .optional()

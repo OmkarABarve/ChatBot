@@ -1,38 +1,65 @@
+# 🤖 Excel Interview Chatbot
 
-## �� Prerequisites
+A full-stack AI-powered chatbot application that conducts Microsoft Excel proficiency interviews. Built with NestJS backend, React frontend, and powered by Google's Gemini AI.
+
+## ✨ Features
+
+- **AI-Powered Interviews**: Conducts structured Excel proficiency interviews using Google Gemini AI
+- **Interactive Chat Interface**: Real-time conversation with the AI interviewer
+- **Structured Assessment**: 10 questions across 3 difficulty levels (Easy, Intermediate, Advanced)
+- **Real-time Feedback**: Immediate evaluation and scoring of responses
+- **Session Management**: Persistent chat sessions with MongoDB storage
+- **Professional UI**: Clean, responsive chat interface built with React
+
+## 🏗️ Project Structure
+
+```
+ChatBot/
+├── backend/                    # NestJS Backend API
+│   ├── src/
+│   │   ├── Chat/              # Chat module with MongoDB schemas
+│   │   ├── gemini/            # Gemini AI service integration
+│   │   ├── app.module.ts      # Main application module
+│   │   └── main.ts            # Application entry point
+│   ├── tools/                 # AI Tools for interview process
+│   │   ├── intro.ts           # Introduction tool
+│   │   ├── questions.ts       # Questions and evaluation tool
+│   │   └── conclusion.ts      # Final assessment tool
+│   ├── systemprompt.ts        # AI system prompt configuration
+│   └── package.json           # Backend dependencies
+├── Frontend/                   # React Frontend
+│   ├── src/
+│   │   ├── GeminiChat.tsx     # Main chat component
+│   │   ├── GeminiChat.css     # Chat styling
+│   │   └── App.tsx            # Root component
+│   └── package.json           # Frontend dependencies
+└── package.json               # Root package with scripts
+```
+
+## 🔧 Prerequisites
 
 - **Node.js** (v18 or higher)
 - **npm** or **pnpm** package manager
 - **MongoDB** (local or cloud instance)
 - **Google AI API Key** (for Gemini integration)
 
-## ��️ Installation
+## ⚡️ Quick Start
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone <your-repository-url>
 cd ChatBot
 ```
 
 ### 2. Install Dependencies
-
-#### Option A: Install all dependencies at once (Recommended)
 ```bash
+# Install all dependencies at once
 npm run install:all
-```
 
-#### Option B: Install dependencies separately
-```bash
-# Install root dependencies
-npm install
-
-# Install backend dependencies
-cd backend
-npm install
-
-# Install frontend dependencies
-cd ../Frontend
-npm install
+# Or install separately
+npm install                    # Root dependencies
+cd backend && npm install      # Backend dependencies
+cd ../Frontend && npm install  # Frontend dependencies
 ```
 
 ### 3. Environment Setup
@@ -56,75 +83,20 @@ PORT=3000
 3. Generate an API key
 4. Add the key to your `.env` file
 
-## �� Running the Application
+### 5. Run the Application
 
-### Development Mode (Both Frontend & Backend)
 ```bash
+# Start both frontend and backend in development mode
 npm run dev
 ```
 
-### Run Services Separately
+The application will be available at:
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3000
 
-#### Backend Only
-```bash
-npm run dev:backend
-# or
-cd backend && npm run start:dev
-```
+## 🚀 Available Scripts
 
-#### Frontend Only
-```bash
-npm run dev:frontend
-# or
-cd Frontend && npm run dev
-```
-
-### Production Mode
-```bash
-npm run build
-npm run start
-```
-
-## 📱 Usage
-
-1. **Start the application** using `npm run dev`
-2. **Open your browser** and navigate to `http://localhost:5173` (Frontend)
-3. **Backend API** will be available at `http://localhost:3000`
-4. **Start the interview** by typing "Hello" or "Start Interview"
-5. **Follow the conversation** as the AI conducts the Excel interview
-6. **Answer questions** and receive real-time feedback
-
-## 🏗️ Project Structure
-
-### Backend (`/backend`)
-
-
-
-
-
-## 🔧 Dependencies
-
-### Root Dependencies
-- `concurrently` - Run multiple commands simultaneously
-- `@nestjs/config` - Configuration management
-
-### Backend Dependencies
-- `@nestjs/core` - NestJS framework
-- `@nestjs/mongoose` - MongoDB integration
-- `@ai-sdk/google` - Google AI SDK
-- `ai` - AI SDK for tool integration
-- `mongoose` - MongoDB ODM
-- `zod` - Schema validation
-
-### Frontend Dependencies
-- `react` - React framework
-- `react-dom` - React DOM rendering
-- `vite` - Build tool and dev server
-- `typescript` - TypeScript support
-
-## 🛠️ Available Scripts
-
-### Root Level
+### Root Level Commands
 ```bash
 npm run dev              # Start both frontend and backend
 npm run dev:backend      # Start only backend
@@ -134,8 +106,9 @@ npm run install:all      # Install all dependencies
 npm run start            # Start production build
 ```
 
-### Backend Scripts
+### Backend Commands
 ```bash
+cd backend
 npm run start:dev        # Development mode with watch
 npm run build            # Build the application
 npm run start:prod       # Production mode
@@ -144,17 +117,30 @@ npm run test:e2e         # Run e2e tests
 npm run lint             # Run ESLint
 ```
 
-### Frontend Scripts
+### Frontend Commands
 ```bash
+cd Frontend
 npm run dev              # Development server
 npm run build            # Build for production
 npm run preview          # Preview production build
 ```
 
+## 📱 How to Use
+
+1. **Start the application** using `npm run dev`
+2. **Open your browser** and navigate to `http://localhost:5173`
+3. **Greet the AI** by typing "Hello" or "Start Interview"
+4. **Follow the structured interview**:
+   - Introduction and explanation of the process
+   - 10 Excel questions across different difficulty levels
+   - Real-time feedback and scoring
+   - Final assessment and conclusion
+5. **View your results** and performance summary
+
 ## 🔌 API Endpoints
 
 ### POST `/gemini/ask`
-Conducts the AI interview session.
+Main endpoint for AI chat interactions.
 
 **Request Body:**
 ```json
@@ -182,78 +168,135 @@ Conducts the AI interview session.
 }
 ```
 
-## 🤖 AI Tools
+## 🤖 AI Interview System
 
-The system uses three main AI tools:
+The chatbot uses a structured approach with three main AI tools:
 
-1. **Introduction Tool** (`introTool`)
-   - Introduces the interviewer
-   - Explains the interview process
-   - Confirms user understanding
+### 1. Introduction Tool (`introTool`)
+- Introduces the AI interviewer
+- Explains the interview process and structure
+- Confirms user understanding before proceeding
 
-2. **Questions Tool** (`questionsTool`)
-   - Asks 10 Excel questions (3 Easy, 4 Intermediate, 3 Advanced)
-   - Evaluates responses with scoring
-   - Provides feedback
+### 2. Questions Tool (`questionsTool`)
+- Conducts the main interview with 10 Excel questions:
+  - **3 Easy questions** (Basic Excel knowledge)
+  - **4 Intermediate questions** (Formulas, functions, data manipulation)
+  - **3 Advanced questions** (Complex functions, pivot tables, macros)
+- Evaluates each response with detailed scoring
+- Provides immediate feedback and explanations
 
-3. **Conclusion Tool** (`conclusionTool`)
-   - Provides final assessment
-   - Summarizes performance
-   - Concludes the interview
+### 3. Conclusion Tool (`conclusionTool`)
+- Provides comprehensive final assessment
+- Summarizes overall performance and strengths/weaknesses
+- Concludes the interview professionally
+
+## 🛠️ Tech Stack
+
+### Backend
+- **NestJS** - Progressive Node.js framework
+- **MongoDB** with **Mongoose** - Database and ODM
+- **Google Gemini AI** - AI conversation engine
+- **AI SDK** - Tool integration and function calling
+- **Zod** - Schema validation
+- **TypeScript** - Type safety
+
+### Frontend
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **CSS3** - Custom styling
+
+### Development Tools
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+- **Jest** - Testing framework
+- **Concurrently** - Run multiple commands
+
+## 🔧 Dependencies
+
+### Root Dependencies
+- `concurrently` - Run multiple commands simultaneously
+- `@nestjs/config` - Configuration management
+
+### Backend Dependencies
+- `@nestjs/core`, `@nestjs/common` - NestJS framework
+- `@nestjs/mongoose` - MongoDB integration
+- `@ai-sdk/google`, `ai` - Google AI SDK and tools
+- `mongoose` - MongoDB ODM
+- `zod` - Schema validation
+- `rxjs` - Reactive programming
+
+### Frontend Dependencies
+- `react`, `react-dom` - React framework
+- `@types/react`, `@types/react-dom` - TypeScript definitions
+- `vite` - Build tool and dev server
+- `typescript` - TypeScript compiler
 
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **MongoDB Connection Error**
-   - Ensure MongoDB is running
-   - Check connection string in `.env`
+**MongoDB Connection Error**
+- Ensure MongoDB is running locally or check cloud connection
+- Verify `MONGODB_URI` in `.env` file
 
-2. **Google AI API Error**
-   - Verify API key is correct
-   - Check API key permissions
+**Google AI API Error**
+- Verify API key is correct and has proper permissions
+- Check API quota and billing settings
 
-3. **Port Already in Use**
-   - Backend: Change PORT in `.env`
-   - Frontend: Vite will automatically use next available port
+**Port Already in Use**
+- Backend: Change `PORT` in `.env` file
+- Frontend: Vite will automatically use next available port
 
-4. **Dependencies Issues**
-   - Delete `node_modules` and `package-lock.json`
-   - Run `npm install` again
+**Dependencies Issues**
+- Delete `node_modules` folders and lock files
+- Run `npm run install:all` again
 
-## 📝 Development
+## 🎨 Customization
 
 ### Adding New Questions
-Edit `backend/tools/questions.ts` to modify the question bank.
+Edit `backend/tools/questions.ts` to modify the question bank and difficulty levels.
 
 ### Customizing AI Behavior
-Modify `backend/systemprompt.ts` to change AI instructions.
+Modify `backend/systemprompt.ts` to change AI instructions and interview flow.
 
-### Styling Changes
-Update `Frontend/src/GeminiChat.css` for UI modifications.
+### UI/Styling Changes
+Update `Frontend/src/GeminiChat.css` for chat interface modifications.
 
-## �� Deployment
+### Database Schema
+Modify schemas in `backend/src/Chat/Schema/` for additional data storage.
+
+## 🚀 Deployment
 
 ### Backend Deployment
-1. Build the application: `npm run build`
+1. Build the application: `cd backend && npm run build`
 2. Set production environment variables
-3. Deploy to your preferred platform (Heroku, AWS, etc.)
+3. Deploy to your preferred platform (Heroku, AWS, Railway, etc.)
 
 ### Frontend Deployment
-1. Build the application: `npm run build`
-2. Deploy the `dist` folder to your hosting service
+1. Build the application: `cd Frontend && npm run build`
+2. Deploy the `dist` folder to hosting service (Netlify, Vercel, etc.)
+3. Update API endpoint in frontend if needed
 
-## �� License
+## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## �� Support
+## 💬 Support
 
-For issues and questions, please create an issue in the repository.
+For issues and questions:
+- Create an issue in the repository
+- Check existing issues for solutions
+- Review the troubleshooting section above
+
+---
+
+**Built with ❤️ using NestJS, React, and Google Gemini AI**
