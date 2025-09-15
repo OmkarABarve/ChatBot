@@ -1,98 +1,259 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## �� Prerequisites
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- **Node.js** (v18 or higher)
+- **npm** or **pnpm** package manager
+- **MongoDB** (local or cloud instance)
+- **Google AI API Key** (for Gemini integration)
 
-## Description
+## ��️ Installation
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
+### 1. Clone the Repository
 ```bash
-$ pnpm install
+git clone <repository-url>
+cd ChatBot
 ```
 
-## Compile and run the project
+### 2. Install Dependencies
 
+#### Option A: Install all dependencies at once (Recommended)
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+npm run install:all
 ```
 
-## Run tests
-
+#### Option B: Install dependencies separately
 ```bash
-# unit tests
-$ pnpm run test
+# Install root dependencies
+npm install
 
-# e2e tests
-$ pnpm run test:e2e
+# Install backend dependencies
+cd backend
+npm install
 
-# test coverage
-$ pnpm run test:cov
+# Install frontend dependencies
+cd ../Frontend
+npm install
 ```
 
-## Deployment
+### 3. Environment Setup
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Create a `.env` file in the `backend` directory:
+```env
+# MongoDB Connection
+MONGODB_URI=mongodb://localhost:27017/excel-interview
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+# Google AI API Key
+GOOGLE_AI_API_KEY=your_google_ai_api_key_here
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# Server Configuration
+PORT=3000
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 4. Get Google AI API Key
 
-## Resources
+1. Visit [Google AI Studio](https://aistudio.google.com/)
+2. Create a new project or select existing one
+3. Generate an API key
+4. Add the key to your `.env` file
 
-Check out a few resources that may come in handy when working with NestJS:
+## �� Running the Application
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Development Mode (Both Frontend & Backend)
+```bash
+npm run dev
+```
 
-## Support
+### Run Services Separately
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### Backend Only
+```bash
+npm run dev:backend
+# or
+cd backend && npm run start:dev
+```
 
-## Stay in touch
+#### Frontend Only
+```bash
+npm run dev:frontend
+# or
+cd Frontend && npm run dev
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Production Mode
+```bash
+npm run build
+npm run start
+```
 
-## License
+## 📱 Usage
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+1. **Start the application** using `npm run dev`
+2. **Open your browser** and navigate to `http://localhost:5173` (Frontend)
+3. **Backend API** will be available at `http://localhost:3000`
+4. **Start the interview** by typing "Hello" or "Start Interview"
+5. **Follow the conversation** as the AI conducts the Excel interview
+6. **Answer questions** and receive real-time feedback
+
+## 🏗️ Project Structure
+
+### Backend (`/backend`)
+
+
+
+
+
+## 🔧 Dependencies
+
+### Root Dependencies
+- `concurrently` - Run multiple commands simultaneously
+- `@nestjs/config` - Configuration management
+
+### Backend Dependencies
+- `@nestjs/core` - NestJS framework
+- `@nestjs/mongoose` - MongoDB integration
+- `@ai-sdk/google` - Google AI SDK
+- `ai` - AI SDK for tool integration
+- `mongoose` - MongoDB ODM
+- `zod` - Schema validation
+
+### Frontend Dependencies
+- `react` - React framework
+- `react-dom` - React DOM rendering
+- `vite` - Build tool and dev server
+- `typescript` - TypeScript support
+
+## 🛠️ Available Scripts
+
+### Root Level
+```bash
+npm run dev              # Start both frontend and backend
+npm run dev:backend      # Start only backend
+npm run dev:frontend     # Start only frontend
+npm run build            # Build both applications
+npm run install:all      # Install all dependencies
+npm run start            # Start production build
+```
+
+### Backend Scripts
+```bash
+npm run start:dev        # Development mode with watch
+npm run build            # Build the application
+npm run start:prod       # Production mode
+npm run test             # Run unit tests
+npm run test:e2e         # Run e2e tests
+npm run lint             # Run ESLint
+```
+
+### Frontend Scripts
+```bash
+npm run dev              # Development server
+npm run build            # Build for production
+npm run preview          # Preview production build
+```
+
+## 🔌 API Endpoints
+
+### POST `/gemini/ask`
+Conducts the AI interview session.
+
+**Request Body:**
+```json
+{
+  "sessionId": "string",
+  "messages": [
+    {
+      "id": "string",
+      "role": "user" | "assistant",
+      "parts": [
+        {
+          "type": "text",
+          "text": "string"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "response": "string"
+}
+```
+
+## 🤖 AI Tools
+
+The system uses three main AI tools:
+
+1. **Introduction Tool** (`introTool`)
+   - Introduces the interviewer
+   - Explains the interview process
+   - Confirms user understanding
+
+2. **Questions Tool** (`questionsTool`)
+   - Asks 10 Excel questions (3 Easy, 4 Intermediate, 3 Advanced)
+   - Evaluates responses with scoring
+   - Provides feedback
+
+3. **Conclusion Tool** (`conclusionTool`)
+   - Provides final assessment
+   - Summarizes performance
+   - Concludes the interview
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **MongoDB Connection Error**
+   - Ensure MongoDB is running
+   - Check connection string in `.env`
+
+2. **Google AI API Error**
+   - Verify API key is correct
+   - Check API key permissions
+
+3. **Port Already in Use**
+   - Backend: Change PORT in `.env`
+   - Frontend: Vite will automatically use next available port
+
+4. **Dependencies Issues**
+   - Delete `node_modules` and `package-lock.json`
+   - Run `npm install` again
+
+## 📝 Development
+
+### Adding New Questions
+Edit `backend/tools/questions.ts` to modify the question bank.
+
+### Customizing AI Behavior
+Modify `backend/systemprompt.ts` to change AI instructions.
+
+### Styling Changes
+Update `Frontend/src/GeminiChat.css` for UI modifications.
+
+## �� Deployment
+
+### Backend Deployment
+1. Build the application: `npm run build`
+2. Set production environment variables
+3. Deploy to your preferred platform (Heroku, AWS, etc.)
+
+### Frontend Deployment
+1. Build the application: `npm run build`
+2. Deploy the `dist` folder to your hosting service
+
+## �� License
+
+This project is licensed under the MIT License.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## �� Support
+
+For issues and questions, please create an issue in the repository.

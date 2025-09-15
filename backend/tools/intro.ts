@@ -8,7 +8,7 @@ const IntroDescription = `This is the first tool that you will use to introduce 
   "This is a ChatBot based Interview. You'll be asked questions regarding Microsoft Excel. You have to answer the questions based on your knowledge of Microsoft Excel."
   
   >Ask user if he has understood.
-  Only execute this tool, when you have the userresponse1 field in your input schema.
+  Only execute this tool, when you have the userresponse1 field in your input schema. After this proceed to asking queestions.
   `;
   //
 
