@@ -21,7 +21,11 @@ export class GeminiService {
   async interviewWithTools(sessionId: string, uiMessages?: UIMessage[]) {
     const system = generateInterviewSystemPrompt();
     const messages = convertToModelMessages(uiMessages || []);
+    
     console.log('GeminiService InterviewWithTools called');
+    console.log('Session ID:', sessionId);
+    console.log('Messages:', JSON.stringify(messages, null, 2));
+    
     try {
       const result = await generateText({
         model: google('gemini-1.5-flash-latest'),
@@ -35,25 +39,14 @@ export class GeminiService {
         messages,
       });
 
-      // Save the conversation
-      /*
-      await this.chatService.addTurn(sessionId, {
-        role: 'user',
-        parts: [prompt],
-      });
-
-      await this.chatService.addTurn(sessionId, {
-        role: 'model',
-        parts: [result.text],
-      });
-      */
       console.log('Result text:', result.text);
       console.log('Tool calls:', result.toolCalls);
       console.log('Usage:', result.usage);
+
       return result.text;
     } catch (error) {
       console.error('💥 Gemini error:', error);
-      throw new Error('Gemini API failed');
+      throw new Error(`Gemini API failed: ${error.message}`);
     }
   }
 }
