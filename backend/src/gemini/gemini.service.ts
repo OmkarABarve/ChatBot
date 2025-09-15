@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
-import { generateText, generateObject } from 'ai';
+import { generateText, generateObject, convertToModelMessages } from 'ai';
 import { google } from '@ai-sdk/google';
 import { ChatService } from 'src/Chat/Schema/chat.service';
 import {
@@ -11,39 +11,32 @@ import {
   createQuestionsTool,
   createConclusionTool,
 } from '../../tools';
+import { UIMessage } from 'ai';
+import { generateInterviewSystemPrompt } from 'systemprompt';
 
 @Injectable()
 export class GeminiService {
   constructor(private readonly chatService: ChatService) {}
 
-  async interviewWithTools(
-    prompt: string,
-    sessionId: string,
-    systemPrompt?: string,
-  ): Promise<string> {
-    console.log("GeminiService InterviewWithTools called");
+  async interviewWithTools(sessionId: string, uiMessages?: UIMessage[]) {
+    const system = generateInterviewSystemPrompt();
+    const messages = convertToModelMessages(uiMessages || []);
+    console.log('GeminiService InterviewWithTools called');
     try {
       const result = await generateText({
         model: google('gemini-1.5-flash-latest'),
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt || 'You are an Excel interview assistant.',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
+        system,
         tools: {
           introTool: createIntroductionTool(),
           questionsTool: createQuestionsTool(),
           conclusionTool: createConclusionTool(),
         },
         toolChoice: 'auto',
+        messages,
       });
 
       // Save the conversation
+      /*
       await this.chatService.addTurn(sessionId, {
         role: 'user',
         parts: [prompt],
@@ -53,7 +46,10 @@ export class GeminiService {
         role: 'model',
         parts: [result.text],
       });
-
+      */
+      console.log('Result text:', result.text);
+      console.log('Tool calls:', result.toolCalls);
+      console.log('Usage:', result.usage);
       return result.text;
     } catch (error) {
       console.error('💥 Gemini error:', error);

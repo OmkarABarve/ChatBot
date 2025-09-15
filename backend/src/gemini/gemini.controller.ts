@@ -1,19 +1,34 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { GeminiService } from './gemini.service';
+import { UIMessage } from 'ai';
+
 @Controller('gemini')
 export class GeminiController {
   constructor(private readonly geminiService: GeminiService) {}
+
   @Post('ask')
   async askGemini(
-    @Body('prompt') prompt: string,
     @Body('sessionId') sessionId: string,
+    @Body('messages') messages?: UIMessage[],
   ) {
-    
-      const response = await this.geminiService.interviewWithTools(prompt, sessionId); //sessionId comes fom frontend
+    const uiMessages = messages || [
+      {
+        id: Date.now().toString(),
+        role: 'user' as const,
+        parts: [
+          {
+            type: 'text' as const,
+            text: "Hi",
+          },
+        ],
+      },
+    ];
+
+    const response = await this.geminiService.interviewWithTools(
+      sessionId,
+      uiMessages,
+    );
     return { response };
   }
-  //@Get('session/:id')
-
-
 }
